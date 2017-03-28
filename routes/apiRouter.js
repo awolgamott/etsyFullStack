@@ -3,6 +3,7 @@ const apiRouter = Router()
 let helpers = require('../config/helpers.js')
 
 let User = require('../db/schema.js').User
+let FavoriteProduct = require('../db/schema.js').FavoriteProduct
 
   
   apiRouter
@@ -47,5 +48,36 @@ let User = require('../db/schema.js').User
 
     // Routes for a Model(resource) should have this structure
 
+    apiRouter
+    .get('/favProds', function(req, res){
+      FavoriteProduct.find(req.query , "-password", function(err, results){
+        if(err) return res.json(err) 
+        res.json(results)
+      })
+    })
+    .post('/favProds', function(request, response) {
+      var newFavProd = new FavoriteProduct(request.body)
+      newFavProd.save(function(error, record) {
+        if (error) {
+          return response.status(400).json(error)
+        }
+        response.json(record)
+      })
+    })
+
+    .put('/favProds/:_id', function(req, res){
+
+      FavoriteProduct.findByIdAndUpdate(req.params._id, req.body, function(err, record){
+          if (err) {
+            res.status(500).send(err)
+          }
+          else if (!record) {
+            res.status(400).send('no record found with that id')
+          }
+          else {
+            res.json(Object.assign({},req.body,record))
+          }
+      })
+    })
 
 module.exports = apiRouter

@@ -15,6 +15,7 @@ var Banner = React.createClass({
 			<div>
 				<input placeholder="search the things" type="text" onKeyDown={this._handleKeyDown}/>
 				<a href="#home">home</a>
+				<a href="#favProds">favorites</a>
 				<div className="mainPic">
 					<div className="siteName">The Homemade Store</div>
 				</div>

@@ -4,18 +4,30 @@ import Backbone from 'backbone'
 import init from './init'
 import HomePage from './views/homePage'
 import {EtsyCollection} from './models/productModel'
+import {FavoriteProductCollection} from './models/favoriteProductModel'
 import {EtsyModel} from './models/productModel'
 import DetailsPage from './views/detailsPage'
+import FavoriteProductsPage from './views/FavoriteProductsPage'
 
 var app = function() {
 	var collectionInstance = new EtsyCollection()
+	var favoritesInstance = new FavoriteProductCollection()
 
 	var EtsyRouter = Backbone.Router.extend({
 		routes: {
 			'home': 'handleHome',
+			'favProds': 'handleFavoriteProducts',
 			'search/:query': 'handleProductSearch',
 			'detail/:listing_id': 'handleDetailPage',
 			'*defaultRoute': 'handleHome'
+		},
+
+		handleFavoriteProducts: function() {
+
+			favoritesInstance.fetch() 
+			ReactDOM.render(<FavoriteProductsPage 
+				favColl={favoritesInstance}
+				/>, document.querySelector('.container'))	
 		},
 
 		handleHome: function() {
